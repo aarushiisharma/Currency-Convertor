@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Convertor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h2>Currency Convertor</h2>
+      <div id="inputbox">
+        <p
+          style="
+            margin-left: 20px;
+            margin-bottom: 2px;
+            padding-top: 10px;
+            color: aliceblue;
+          "
+        >
+          Enter Amount
+        </p>
+        <input id="input" type="text" />
+      </div>
+      <div id="fromto">
+        <div id="first">
+          <p style="color: aliceblue; margin-bottom: 0" id="p1">From</p>
+          <select name="countries" id="from">
+            <option selected value="usd">USA</option>
+            <option value="inr">IND</option>
+            <option value="cad">CAD</option>
+            <option value="rub">RUS</option>
+          </select>
+        </div>
+        <div id="exchange"></div>
+        <div id="second">
+          <p
+            style="color: aliceblue; margin-left: 48px; margin-bottom: 0"
+            id="p2"
+          >
+            To
+          </p>
+          <select name="countries" id="to">
+            <option selected value="inr">IND</option>
+            <option value="cad">CAD</option>
+            <option value="usd">USA</option>
+            <option value="rub">RUS</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="convert"></div>
+      <button id="result">Get Exchange Rate</button>
+    </div>
+  </body>
+
+  <script>
+    const result = document.getElementById("result");
+
+    result.onclick = async function () {
+      const from = document.getElementById("from").value;
+      const Amount = document.getElementById("input").value;
+      const to = document.getElementById("to").value;
+
+      const URL = `https://2024-03-06.currency-api.pages.dev/v1/currencies/${from}.json`;
+
+      try {
+        const response = await fetch(URL);
+        const data = await response.json();
+  
+        const info=data[from][to]*Amount;
+        console.log(info);
+         
+        const convert =document.getElementById('convert')
+        convert.innerHTML=`${Amount} ${from.toUpperCase()} = ${info.toFixed(2)} ${to.toUpperCase()}`
+        
+        document.getElementById("input").value = "";
+
+      } catch (error) {
+          console.error("Error fetching exchange rate:", error);
+      }
+
+      console.log(Amount);      
+    };
+  </script>
+</html>
